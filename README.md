@@ -1,7 +1,7 @@
 # Rustium
 Medium feed as Json built with Rust.
 ## How it works?
-`rustium-api` makes requests to `https://medium.com/AUTHOR/feed`, receiving RSS as `xml` and convert to Json.
+`rustium-api` makes requests to `https://medium.com/AUTHOR/feed`, receiving RSS as `xml` and converting to Json.
 ## Request
 ```text
 GET
