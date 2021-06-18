@@ -19,15 +19,15 @@ pub mod rustium {
 
     #[derive(Debug, Serialize)]
     pub struct RSSFeed {
-        posts: Vec<Post>,
+        pub posts: Vec<Post>,
     }
 
     #[derive(Debug, Serialize)]
     pub struct Post {
-        title: String,
-        link: String,
-        category: Vec<String>,
-        content: String,
+        pub title: String,
+        pub link: String,
+        pub category: Vec<String>,
+        pub content: String,
     }
 
     pub async fn get_posts(
@@ -72,6 +72,35 @@ pub mod rustium {
             })
             .collect();
         return RSSFeed { posts: posts };
+    }
+
+    #[cfg(test)]
+    mod tests {
+
+        pub use crate::mediumrss;
+        pub use crate::rustium;
+
+        #[test]
+        fn validate_parse_to_rssfeed() {
+            let mut category: Vec<String> = Vec::new();
+            category.push(String::from("tech"));
+            category.push(String::from("rust"));
+
+            let mut xml_posts: Vec<mediumrss::XmlPost> = Vec::new();
+
+            xml_posts.push(mediumrss::XmlPost {
+                title: String::from("title"),
+                link: String::from("link"),
+                content: String::from("content"),
+                category: category.clone(),
+            });
+
+            let rssfeed: rustium::RSSFeed = rustium::map_to_rssfeed(xml_posts);
+            assert_eq!("title", rssfeed.posts[0].title);
+            assert_eq!("link", rssfeed.posts[0].link);
+            assert_eq!("content", rssfeed.posts[0].content);
+            assert_eq!(category, rssfeed.posts[0].category);
+        }
     }
 }
 
